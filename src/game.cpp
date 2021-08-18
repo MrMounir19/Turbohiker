@@ -21,9 +21,13 @@ void Game::initReps() {
     this->playerRep = new PlayerRep();
     //ROAD
     this->backgroundRep = new BackgroundRep();
-    //AI
-    for (auto ai:this->turboGame->getAI()) {
+    //RACINGHIKERS
+    for (auto& racingHiker:this->turboGame->getAI()) {
         this->racingHikerReps.push_back(new RacingHikerRep);
+    }
+    //ENEMYHIKERS
+    for (auto& enemyhiker:this->turboGame->getWorld()->getEnemyHikers()) {
+        this->enemyHikerReps.push_back(new EnemyHikerRep);
     }
 }
 
@@ -52,7 +56,13 @@ void Game::update() {
         Turbohiker::Position position = this->turboGame->getAI()[i]->getPosition();
         this->racingHikerReps[i]->update(position, this->turboGame->getPlayer()->getPosition());
     }
+    for (unsigned int i = 0; i < this->turboGame->getWorld()->getEnemyHikers().size(); i++) {
+        Turbohiker::EnemyHiker* enemyhiker = this->turboGame->getWorld()->getEnemyHikers()[i];
+        Turbohiker::Position position = enemyhiker->getPosition();
+        this->enemyHikerReps[i]->update(enemyhiker, this->turboGame->getPlayer()->getPosition());
+    }
     this->backgroundRep->update(this->turboGame->getPlayer()->getSpeed());
+    this->turboGame->removeUpdates();
 }
 
 void Game::pollEvents() {
@@ -135,7 +145,7 @@ void Game::pollEvents() {
 
 void Game::render() {
     this->window->clear();  
-    //Draw
+    //DRAW
     if (this->menu->isActivated()) {
         menu->draw(*this->window);
     }
@@ -146,6 +156,11 @@ void Game::render() {
         //RENDER AI
         for (auto& racingHikerRep:this->racingHikerReps) {
             racingHikerRep->render(*this->window);
+        }
+
+        //RENDER STATIC
+        for (auto& enemyhikerRep:this->enemyHikerReps) {
+            enemyhikerRep->render(*this->window);
         }
 
         //RENDER PLAYER
@@ -162,3 +177,4 @@ void Game::run() {
     //RENDER
     this->render();
 }
+

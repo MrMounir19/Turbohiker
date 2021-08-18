@@ -1,7 +1,6 @@
 #include "Player.h"
-#include "Racinghiker.h"
 #include "World.h"
-
+#include "Racinghiker.h"
 
 #ifndef TURBOGAME
 #define TURBOGAME
@@ -18,10 +17,13 @@ namespace Turbohiker {
         Game();
         ~Game();
         Player* getPlayer();
+        World* getWorld();
         void update();
+        void updateEntity(Entity* entity);
+        void removeUpdates();
         std::vector<RacingHiker*> getAI();
         bool findCollision();
-        bool checkCollision(Entity* hiker);
+        bool checkCollision(Entity* hiker, Turbohiker::Position oldPosition);
         bool changeLane(Turbohiker::Direction direction, Turbohiker::Entity* hiker);
     };
 }

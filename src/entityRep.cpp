@@ -17,7 +17,6 @@ void EntityRep::setTexture(std::string filename) {
     this->texture.loadFromFile(filename);
 }
 
-
 void EntityRep::setSprite() {
     this->sprite.setTexture(this->texture);
 }

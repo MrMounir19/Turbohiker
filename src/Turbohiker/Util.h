@@ -15,6 +15,9 @@ namespace Turbohiker {
         Position(int x = 0, int y = 0): x(x), y(y) {}
         bool operator==(const Position& position);
     };
+
+    bool betweenRange(Turbohiker::Position OLD, Turbohiker::Position TOCHECK, Turbohiker::Position NEW);
 }
+
 
 #endif

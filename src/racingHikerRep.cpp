@@ -1,7 +1,7 @@
 #include "racingHikerRep.h"
 
 void RacingHikerRep::initTexture() {
-    this->setTexture("Textures/player.png");
+    this->setTexture("Textures/racinghikers.png");
 }
 
 void RacingHikerRep::initSprite() {

@@ -8,7 +8,6 @@ namespace Turbohiker {
     class Player: public Entity {
     public:
         Player(int lane = 0) : Entity(lane) {}
-        void advance();
     };
 }
 
