@@ -29,6 +29,11 @@ void Game::initReps() {
     for (auto& enemyhiker:this->turboGame->getWorld()->getEnemyHikers()) {
         this->enemyHikerReps.push_back(new EnemyHikerRep);
     }
+
+    //BONUS
+    for (auto& bonus:this->turboGame->getWorld()->getBonuses()) {
+        this->bonusReps.push_back(new BonusRep(bonus->getType()));
+    }
 }
 
 Game::~Game() {
@@ -52,15 +57,24 @@ void Game::update() {
     this->pollEvents();
     this->turboGame->update();
     this->playerRep->update(this->turboGame->getPlayer()->getPosition());
+    //AI
     for (unsigned int i = 0; i < this->turboGame->getAI().size(); i++) {
         Turbohiker::Position position = this->turboGame->getAI()[i]->getPosition();
         this->racingHikerReps[i]->update(position, this->turboGame->getPlayer()->getPosition());
     }
+    //ENEMIES
     for (unsigned int i = 0; i < this->turboGame->getWorld()->getEnemyHikers().size(); i++) {
         Turbohiker::EnemyHiker* enemyhiker = this->turboGame->getWorld()->getEnemyHikers()[i];
         Turbohiker::Position position = enemyhiker->getPosition();
         this->enemyHikerReps[i]->update(enemyhiker, this->turboGame->getPlayer()->getPosition());
     }
+    //BONUSES
+    for (unsigned int i = 0; i < this->turboGame->getWorld()->getBonuses().size(); i++) {
+        Turbohiker::Bonus* bonus = this->turboGame->getWorld()->getBonuses()[i];
+        Turbohiker::Position position = bonus->getPosition();
+        this->bonusReps[i]->update(position, this->turboGame->getPlayer()->getPosition());
+    }
+    //BACKGROUND
     this->backgroundRep->update(this->turboGame->getPlayer()->getSpeed());
     this->turboGame->removeUpdates();
 }
@@ -133,6 +147,10 @@ void Game::pollEvents() {
                         case sf::Keyboard::Down:
                             this->turboGame->getPlayer()->decreaseSpeed();
                             break;
+                        case sf::Keyboard::Space:
+                            this->turboGame->yell(this->turboGame->getPlayer());
+                            break;
+
                         default:
                             break;
                     }
@@ -153,14 +171,19 @@ void Game::render() {
         //RENDER ROAD
         this->backgroundRep->render(*this->window);
 
+        //RENDER BONUS
+        for (auto& bonusRep:this->bonusReps) {
+            bonusRep->render(*this->window);
+        }
+        
+        //RENDER STATIC AND RUNNING
+        for (auto& enemyhikerRep:this->enemyHikerReps) {
+            enemyhikerRep->render(*this->window);
+        }
+
         //RENDER AI
         for (auto& racingHikerRep:this->racingHikerReps) {
             racingHikerRep->render(*this->window);
-        }
-
-        //RENDER STATIC
-        for (auto& enemyhikerRep:this->enemyHikerReps) {
-            enemyhikerRep->render(*this->window);
         }
 
         //RENDER PLAYER

@@ -16,6 +16,7 @@ namespace Turbohiker {
         bool isActivated();
         void activate();
         void update();
+        void getYelled();
         Turbohiker::Direction getDirection();
     };
 }

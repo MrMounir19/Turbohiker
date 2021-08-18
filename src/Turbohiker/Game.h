@@ -2,6 +2,7 @@
 #include "World.h"
 #include "Racinghiker.h"
 
+
 #ifndef TURBOGAME
 #define TURBOGAME
 
@@ -21,6 +22,8 @@ namespace Turbohiker {
         void update();
         void updateEntity(Entity* entity);
         void removeUpdates();
+        void yell(Entity* hiker);
+        EnemyHiker* closestEnemy(Entity* hiker);
         std::vector<RacingHiker*> getAI();
         bool findCollision();
         bool checkCollision(Entity* hiker, Turbohiker::Position oldPosition);

@@ -9,9 +9,10 @@ std::vector<Turbohiker::RacingHiker*> Turbohiker::Game::getAI() {
 }
 
 void Turbohiker::Game::initPlayer() {
-    srand(time(NULL));
+    Turbohiker::RandomSingleton* X = Turbohiker::RandomSingleton::getInstance();
     //GENERATE RANDOM LANE
-    int lane = rand() % 4;
+    double lane = X->random(0, 3);
+    
     //ADD PLAYER
     this->player = new Player(lane);
 }
@@ -109,3 +110,35 @@ void Turbohiker::Game::updateEntity(Entity* entity) {
 Turbohiker::World* Turbohiker::Game::getWorld() {
     return this->world;
 }
+
+void Turbohiker::Game::yell(Entity* hiker) {
+    if (hiker->getYellCooldown() <= 0) {
+        //YELL
+        Turbohiker::EnemyHiker* closestEnemy = this->closestEnemy(hiker);
+        if (closestEnemy) {
+            closestEnemy->getYelled();
+            hiker->setUpdated(true);
+            hiker->resetYellCooldown();
+        }
+    }
+}
+
+Turbohiker::EnemyHiker* Turbohiker::Game::closestEnemy(Entity* hiker) {
+    Turbohiker::EnemyHiker* closestEnemy = nullptr;
+    Turbohiker::Position position = hiker->getPosition();
+    for (auto& enemy:this->getWorld()->getEnemyHikers()) {
+        if (position.x == enemy->getPosition().x && position.y < enemy->getPosition().y &&
+            position.y + 200 > enemy->getPosition().y) {
+                if (closestEnemy) {
+                    if (closestEnemy->getPosition().y > enemy->getPosition().y) {
+                        closestEnemy = enemy;
+                    }
+                }
+                else {
+                    closestEnemy = enemy;
+                }
+        }
+    }
+    return closestEnemy;
+}
+

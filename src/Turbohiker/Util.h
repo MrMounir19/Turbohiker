@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <stdio.h>
+#include <random>
 
 #ifndef TURBOUTIL
 #define TURBOUTIL
@@ -16,8 +17,23 @@ namespace Turbohiker {
         bool operator==(const Position& position);
     };
 
+
+    class RandomSingleton {
+    private:
+        static RandomSingleton* instance;
+        RandomSingleton();
+
+    public:
+        static RandomSingleton* getInstance();
+        double random(int min, int max);
+        int getRandomLane();
+        int getRandomPosition(int min, int max);
+    };
+
     bool betweenRange(Turbohiker::Position OLD, Turbohiker::Position TOCHECK, Turbohiker::Position NEW);
 }
+
+
 
 
 #endif

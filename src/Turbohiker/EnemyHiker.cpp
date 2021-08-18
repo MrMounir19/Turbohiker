@@ -29,3 +29,12 @@ void Turbohiker::EnemyHiker::update() {
         this->setUpdated(true);
     }
 }
+
+void Turbohiker::EnemyHiker::getYelled() {
+    Turbohiker::RandomSingleton* X = Turbohiker::RandomSingleton::getInstance();
+    double x = X->random(0, 1);
+
+    if (x < 0.5) {
+        this->activate();
+    }
+}

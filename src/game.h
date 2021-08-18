@@ -9,12 +9,14 @@
 #include "racingHikerRep.h"
 #include "entityRep.h"
 #include "enemyHikerRep.h"
+#include "bonusRep.h"
 
 class Game {
     // VARIABLES
     PlayerRep* playerRep;
     std::vector<RacingHikerRep*> racingHikerReps;
     std::vector<EnemyHikerRep*> enemyHikerReps;
+    std::vector<BonusRep*> bonusReps;
     BackgroundRep* backgroundRep;
     Menu* menu;
     Turbohiker::Game* turboGame;

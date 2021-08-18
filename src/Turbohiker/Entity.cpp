@@ -25,6 +25,7 @@ bool Turbohiker::Entity::changeLane(Turbohiker::Direction direction) {
 Turbohiker::Entity::Entity(int lane, int position) {
     this->position = Turbohiker::Position(lane, position);
     this->speed = 2;
+    this->yellCooldown = 180;
 }
 
 void Turbohiker::Entity::increaseSpeed() {
@@ -51,6 +52,7 @@ void Turbohiker::Entity::setSpeed(unsigned speed) {
 void Turbohiker::Entity::update() {
     if (!this->getUpdated()) {
         this->setPosition(this->getPosition().x, this->getPosition().y+this->getSpeed());
+        this->decreaseYellCooldown();
         this->setUpdated(true);
     }
 }
@@ -61,4 +63,16 @@ bool Turbohiker::Entity::getUpdated() {
 
 void Turbohiker::Entity::setUpdated(bool update) {
     this->updated = updated;
+}
+
+
+int Turbohiker::Entity::getYellCooldown() {
+    return this->yellCooldown;
+}
+void Turbohiker::Entity::resetYellCooldown() {
+    this->yellCooldown = 500;
+}
+
+void Turbohiker::Entity::decreaseYellCooldown() {
+    this->yellCooldown--;
 }

@@ -9,6 +9,7 @@ namespace Turbohiker {
         Position position;
         unsigned int speed;
         bool updated;
+        int yellCooldown; // 5 seconds
     public:
         //UPDATE
         bool getUpdated();
@@ -25,6 +26,9 @@ namespace Turbohiker {
         void decreaseSpeed();
         unsigned int getSpeed();
         void setSpeed(unsigned speed);
+        int getYellCooldown();
+        void resetYellCooldown();
+        void decreaseYellCooldown();
         
         //CONSTRUCTOR
         Entity(int lane = 0, int position = 0);
