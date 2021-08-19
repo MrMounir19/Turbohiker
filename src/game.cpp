@@ -4,42 +4,40 @@
 void Game::initWindow() {
     this->videoMode.width = 1920;
     this->videoMode.height = 1080;
-    this->window = new sf::RenderWindow(this->videoMode, "Turbohiker");
+    this->window = std::make_unique<sf::RenderWindow>(this->videoMode, "Turbohiker");
     this->window->setFramerateLimit(60);
 }
 
 void Game::initTurboGame() {
-    this->turboGame = new Turbohiker::Game();
+    this->turboGame = std::make_unique<Turbohiker::Game>();
 }
 
 void Game::initMenu() {
-    this->menu = new Menu(window->getSize().x, window->getSize().y);
+    this->menu = std::make_unique<Menu>(window->getSize().x, window->getSize().y);
 }
 
 void Game::initReps() {
     //PLAYER
-    this->playerRep = new PlayerRep();
+    this->playerRep = std::make_unique<PlayerRep>();
     //ROAD
-    this->backgroundRep = new BackgroundRep();
+    this->backgroundRep = std::make_unique<BackgroundRep>();
     //RACINGHIKERS
     for (auto& racingHiker:this->turboGame->getAI()) {
-        this->racingHikerReps.push_back(new RacingHikerRep);
+        this->racingHikerReps.push_back(std::make_unique<RacingHikerRep>());
     }
     //ENEMYHIKERS
     for (auto& enemyhiker:this->turboGame->getWorld()->getEnemyHikers()) {
-        this->enemyHikerReps.push_back(new EnemyHikerRep);
+        this->enemyHikerReps.push_back(std::make_unique<EnemyHikerRep>());
     }
 
     //BONUS
     for (auto& bonus:this->turboGame->getWorld()->getBonuses()) {
-        this->bonusReps.push_back(new BonusRep(bonus->getType()));
+        this->bonusReps.push_back(std::make_unique<BonusRep>(bonus->getType()));
     }
 }
 
 Game::~Game() {
-    delete this->window;
-    delete this->menu;
-    delete this->turboGame;
+
 }
 
 Game::Game() {
@@ -64,13 +62,13 @@ void Game::update() {
     }
     //ENEMIES
     for (unsigned int i = 0; i < this->turboGame->getWorld()->getEnemyHikers().size(); i++) {
-        Turbohiker::EnemyHiker* enemyhiker = this->turboGame->getWorld()->getEnemyHikers()[i];
+        std::shared_ptr<Turbohiker::EnemyHiker> enemyhiker = this->turboGame->getWorld()->getEnemyHikers()[i];
         Turbohiker::Position position = enemyhiker->getPosition();
         this->enemyHikerReps[i]->update(enemyhiker, this->turboGame->getPlayer()->getPosition());
     }
     //BONUSES
     for (unsigned int i = 0; i < this->turboGame->getWorld()->getBonuses().size(); i++) {
-        Turbohiker::Bonus* bonus = this->turboGame->getWorld()->getBonuses()[i];
+        std::shared_ptr<Turbohiker::Bonus> bonus = this->turboGame->getWorld()->getBonuses()[i];
         Turbohiker::Position position = bonus->getPosition();
         this->bonusReps[i]->update(position, this->turboGame->getPlayer()->getPosition());
     }

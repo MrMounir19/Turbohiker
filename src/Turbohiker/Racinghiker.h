@@ -1,8 +1,10 @@
-#include "Entity.h"
+
 
 
 #ifndef TURBORACINGHIKER
 #define TURBORACINGHIKER
+
+#include "Entity.h"
 
 namespace Turbohiker {
 

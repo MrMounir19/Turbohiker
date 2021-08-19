@@ -1,11 +1,14 @@
+
+
+#ifndef TURBOUTIL
+#define TURBOUTIL
+
 #include <vector>
 #include <stdlib.h>
 #include <time.h>
 #include <stdio.h>
 #include <random>
-
-#ifndef TURBOUTIL
-#define TURBOUTIL
+#include <memory>
 
 namespace Turbohiker {
     enum Direction {LEFT, RIGHT};

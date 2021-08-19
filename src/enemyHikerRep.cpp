@@ -15,7 +15,7 @@ EnemyHikerRep::EnemyHikerRep() : EntityRep() {
     this->initSprite();
 }
 
-void EnemyHikerRep::update(Turbohiker::EnemyHiker* hiker, Turbohiker::Position playerPosition) {
+void EnemyHikerRep::update(std::shared_ptr<Turbohiker::EnemyHiker>  hiker, Turbohiker::Position playerPosition) {
     if (!hiker->isActivated()) {
         //SET POSITION
         this->setPositionSprite(sf::Vector2f(500.f + 225*hiker->getPosition().x, 500.f - (hiker->getPosition().y-playerPosition.y)*2));

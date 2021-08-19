@@ -1,6 +1,6 @@
 #include "Entity.h"
 
-unsigned int Turbohiker::Entity::getSpeed() {
+int Turbohiker::Entity::getSpeed() {
     return this->speed;
 }
 
@@ -26,10 +26,11 @@ Turbohiker::Entity::Entity(int lane, int position) {
     this->position = Turbohiker::Position(lane, position);
     this->speed = 2;
     this->yellCooldown = 180;
+    this->maxSpeed = 2;
 }
 
 void Turbohiker::Entity::increaseSpeed() {
-    if (this->speed < 4) {
+    if (this->speed < maxSpeed) {
         this->speed++;
     }
 }
@@ -45,7 +46,7 @@ void Turbohiker::Entity::setPosition(int x, int y) {
     position.y = y;
 }
 
-void Turbohiker::Entity::setSpeed(unsigned speed) {
+void Turbohiker::Entity::setSpeed(int speed) {
     this->speed = speed;
 }
 
@@ -75,4 +76,12 @@ void Turbohiker::Entity::resetYellCooldown() {
 
 void Turbohiker::Entity::decreaseYellCooldown() {
     this->yellCooldown--;
+}
+
+void Turbohiker::Entity::upgradeMaxSpeed() {
+    this->maxSpeed = 3;
+}
+
+void Turbohiker::Entity::resetMaxSpeed() {
+    this->maxSpeed = 2;
 }

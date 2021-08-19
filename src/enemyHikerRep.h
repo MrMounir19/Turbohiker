@@ -11,7 +11,7 @@ public:
     void initTexture() override;
     void initSprite() override;
     EnemyHikerRep();
-    void update(Turbohiker::EnemyHiker* hiker, Turbohiker::Position playerPosition);
+    void update(std::shared_ptr<Turbohiker::EnemyHiker> hiker, Turbohiker::Position playerPosition);
 };
 
 #endif

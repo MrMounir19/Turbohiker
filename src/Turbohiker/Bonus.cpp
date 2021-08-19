@@ -14,3 +14,18 @@ Turbohiker::Bonus::Bonus(int lane, int position, int duration, Turbohiker::Bonus
     this->activated = false;
     this->setSpeed(0);
 }
+
+void Turbohiker::Bonus::activate() {
+    this->activated = true;
+}
+
+bool Turbohiker::Bonus::isActivated() {
+    return this->activated;
+}
+
+void Turbohiker::Bonus::setDuration(int duration) {
+    this->duration = duration*60;
+}
+void Turbohiker::Bonus::setType(Turbohiker::BonusType type) {
+    this->type = type;
+}

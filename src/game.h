@@ -13,14 +13,14 @@
 
 class Game {
     // VARIABLES
-    PlayerRep* playerRep;
-    std::vector<RacingHikerRep*> racingHikerReps;
-    std::vector<EnemyHikerRep*> enemyHikerReps;
-    std::vector<BonusRep*> bonusReps;
-    BackgroundRep* backgroundRep;
-    Menu* menu;
-    Turbohiker::Game* turboGame;
-    sf::RenderWindow* window;
+    std::unique_ptr<PlayerRep>  playerRep;
+    std::vector<std::unique_ptr<RacingHikerRep>> racingHikerReps;
+    std::vector<std::unique_ptr<EnemyHikerRep>> enemyHikerReps;
+    std::vector<std::unique_ptr<BonusRep>> bonusReps;
+    std::unique_ptr<BackgroundRep> backgroundRep;
+    std::unique_ptr<Menu> menu;
+    std::unique_ptr<Turbohiker::Game> turboGame;
+    std::unique_ptr<sf::RenderWindow> window;
     int counterBackground;
     sf::Event ev;
     sf::VideoMode videoMode;

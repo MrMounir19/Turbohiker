@@ -1,11 +1,10 @@
 
-#ifndef BONUS
-#define BONUS
+#ifndef TURBOBONUS
+#define TURBOBONUS
 
 #include "Entity.h"
 
 namespace Turbohiker {
-    enum BonusType {speed, spawn};
     class Bonus: public Entity {
         BonusType type;
         int duration;
@@ -14,6 +13,10 @@ namespace Turbohiker {
             Bonus(int lane, int position, int duration, Turbohiker::BonusType type); // DURATION IN SEC
             BonusType getType();
             int getDuration();
+            void activate();
+            bool isActivated();
+            void setDuration(int duration);
+            void setType(Turbohiker::BonusType type);
     };
 }
 

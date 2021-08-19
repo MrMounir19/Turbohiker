@@ -1,15 +1,20 @@
-#include "Util.h"
 
 
 #ifndef TURBOENTITY
 #define TURBOENTITY
 
+#include "Util.h"
+
 namespace Turbohiker {
+    enum BonusType {speed, spawn};
     class Entity {
         Position position;
-        unsigned int speed;
+        int speed;
         bool updated;
+        int maxSpeed;
         int yellCooldown; // 5 seconds
+
+        
     public:
         //UPDATE
         bool getUpdated();
@@ -24,12 +29,15 @@ namespace Turbohiker {
         //SPEED
         void increaseSpeed();
         void decreaseSpeed();
-        unsigned int getSpeed();
-        void setSpeed(unsigned speed);
+        int getSpeed();
+        void setSpeed(int speed);
+        void upgradeMaxSpeed();
+        void resetMaxSpeed();
+
         int getYellCooldown();
         void resetYellCooldown();
         void decreaseYellCooldown();
-        
+
         //CONSTRUCTOR
         Entity(int lane = 0, int position = 0);
     };
