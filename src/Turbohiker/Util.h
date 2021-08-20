@@ -20,7 +20,6 @@ namespace Turbohiker {
         bool operator==(const Position& position);
     };
 
-
     class RandomSingleton {
     private:
         static RandomSingleton* instance;
@@ -35,6 +34,8 @@ namespace Turbohiker {
 
     bool betweenRange(Turbohiker::Position OLD, Turbohiker::Position TOCHECK, Turbohiker::Position NEW);
 }
+
+
 
 
 

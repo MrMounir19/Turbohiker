@@ -1,6 +1,3 @@
-
-
-
 #ifndef ENEMYHIKER
 #define ENEMYHIKER
 
@@ -18,6 +15,11 @@ namespace Turbohiker {
         void update();
         void getYelled();
         Turbohiker::Direction getDirection();
+    };
+
+    class EnemyHikerFactory: public EntityFactory {
+        public:
+            std::shared_ptr<Turbohiker::Entity> createEntity(int lane = 0, int position = 0) override;
     };
 }
 

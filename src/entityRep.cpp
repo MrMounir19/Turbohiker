@@ -1,15 +1,15 @@
 #include "entityRep.h"
 
 
-EntityRep::EntityRep() {
+EntityRep::EntityRep(std::tuple<float,float> resRatio) {
     this->animationCounter = 0;
 }
 
 void EntityRep::initTexture() {
-    this->setTexture("Textures/car.png");
+    this->setTexture("Textures/player.png");
 }
 
-void EntityRep::initSprite() {
+void EntityRep::initSprite(std::tuple<float,float> resRatio) {
     this->setSprite();
 }
 
@@ -52,3 +52,8 @@ void EntityRep::addCounter(int amount) {
 void EntityRep::moduloCounter(int modulo) {
     this->animationCounter %= modulo;
 }
+
+std::shared_ptr<EntityRep> EntityRepFactory::createEntityRep(std::tuple<float,float> resRatio) {
+    return std::make_shared<EntityRep>(resRatio);
+}
+

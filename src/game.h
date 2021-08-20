@@ -10,17 +10,21 @@
 #include "entityRep.h"
 #include "enemyHikerRep.h"
 #include "bonusRep.h"
+#include "finishLineRep.h"
 
 class Game {
     // VARIABLES
-    std::unique_ptr<PlayerRep>  playerRep;
-    std::vector<std::unique_ptr<RacingHikerRep>> racingHikerReps;
-    std::vector<std::unique_ptr<EnemyHikerRep>> enemyHikerReps;
-    std::vector<std::unique_ptr<BonusRep>> bonusReps;
-    std::unique_ptr<BackgroundRep> backgroundRep;
+    std::shared_ptr<PlayerRep>  playerRep;
+    std::vector<std::shared_ptr<RacingHikerRep>> racingHikerReps;
+    std::vector<std::shared_ptr<EnemyHikerRep>> enemyHikerReps;
+    std::vector<std::shared_ptr<BonusRep>> bonusReps;
+    std::shared_ptr<BackgroundRep> backgroundRep;
+    std::shared_ptr<FinishLineRep> finishLineRep;
     std::unique_ptr<Menu> menu;
     std::unique_ptr<Turbohiker::Game> turboGame;
     std::unique_ptr<sf::RenderWindow> window;
+    
+    std::tuple<float, float> resRatio;
     int counterBackground;
     sf::Event ev;
     sf::VideoMode videoMode;

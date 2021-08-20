@@ -26,10 +26,9 @@ Turbohiker::RandomSingleton::RandomSingleton() {}
 
 
 double Turbohiker::RandomSingleton::random(int min, int max) {
-    std::random_device rd;
-    static std::mt19937 gen(rd());
-    static std::uniform_real_distribution<> dis(min, max);
-    return dis(gen);
+    srand(time(0));
+    int temp = rand() % 10;
+    return temp/10;
 }
 
 int Turbohiker::RandomSingleton::getRandomLane() {

@@ -40,6 +40,8 @@ Turbohiker::Game::Game() {
     this->initPlayer();
     this->initAI();
     this->initWorld();
+    this->clock = 0;
+    this->running = true;
 }
 
 Turbohiker::Game::~Game() {
@@ -47,6 +49,7 @@ Turbohiker::Game::~Game() {
 }
 
 void Turbohiker::Game::update() {
+    clock++;
     //UPDATE PLAYER
     this->updateEntity(this->player);
 
@@ -56,6 +59,17 @@ void Turbohiker::Game::update() {
     }
     for (auto& enemy:this->world->getEnemyHikers()) {
         enemy->update();
+    }
+    //check if game finished
+    this->running = false;
+    for (auto& ai:this->AI) {
+        if (ai->getSpeed() != 0) {
+            this->running = true;
+            break;
+        }
+    }
+    if (player->getSpeed() != 0) {
+        this->running = true;
     }
 }
 
@@ -104,20 +118,40 @@ void Turbohiker::Game::removeUpdates() {
 }
 
 void Turbohiker::Game::updateEntity(std::shared_ptr<Entity> entity) {
-    Turbohiker::Position oldPosition = entity->getPosition();
-    entity->update();
-    //CHECK COLLISION
-    if (checkCollision(entity, oldPosition)) {
-        entity->setPosition(oldPosition.x, oldPosition.y);
-        entity->setSpeed(1);
+    if (entity->getSpeed() != 0) {
+        Turbohiker::Position oldPosition = entity->getPosition();
+        entity->update();
+        //CHECK COLLISION
+        if (checkCollision(entity, oldPosition)) {
+            entity->setPosition(oldPosition.x, oldPosition.y);
+            entity->setSpeed(1);
+            entity->addMinusPoint();
+        }
+
+        //CHECK BONUS COLLECTED
+        std::shared_ptr<Bonus> bonus = checkCollectedBonus(entity, oldPosition);
+        if (bonus) {
+            entity->applyBonus(bonus);
+            //BOTS ACTIVATE ACTIVE BONUS DIRECTLY
+            if (entity != player and bonus->getType()==Turbohiker::spawn and entity->getActiveBonus()) {
+                this->activateBonus(entity);
+            }
+        }
+        if (entity->getPosition().y >= 3488) {
+            entity->setSpeed(0);
+            entity->setPosition(entity->getPosition().x, 3500);
+            if (entity == player) {
+                this->playerScore = 100 - this->AIScores.size()*10 - entity->getMinusPoints();
+            }
+            else {
+                int score = 100 - this->AIScores.size()*10 - entity->getMinusPoints();
+                if (this->player->getSpeed() == 0) {
+                    score = score-10;
+                }
+                AIScores.push_back(score);
+            }
+        }
     }
-    //CHECK BONUS COLLECTED
-    /*
-    Bonus* bonus = checkCollectedBonus(entity, oldPosition);
-    if (bonus) {
-        entity->applyBonus(bonus);
-    }
-    */
 }
 
 std::shared_ptr<Turbohiker::World> Turbohiker::Game::getWorld() {
@@ -132,6 +166,7 @@ void Turbohiker::Game::yell(std::shared_ptr<Entity> hiker) {
             closestEnemy->getYelled();
             hiker->setUpdated(true);
             hiker->resetYellCooldown();
+            hiker->addMinusPoint();
         }
     }
 }
@@ -155,12 +190,46 @@ std::shared_ptr<Turbohiker::EnemyHiker> Turbohiker::Game::closestEnemy(std::shar
     return closestEnemy;
 }
 
-/*
-Turbohiker::Bonus* Turbohiker::Game::checkCollectedBonus(Entity* hiker, Turbohiker::Position oldPosition) {
+std::shared_ptr<Turbohiker::Bonus> Turbohiker::Game::checkCollectedBonus(std::shared_ptr<Entity> hiker, Turbohiker::Position oldPosition) {
     for (auto& bonus:this->world->getBonuses()) {
         if (bonus->getPosition().x == hiker->getPosition().x and Turbohiker::betweenRange(oldPosition, bonus->getPosition(), hiker->getPosition())) {
             return bonus;
         }
     }
+    return nullptr;
 }
-*/
+
+std::unique_ptr<Turbohiker::Game> Turbohiker::GameFactory::createGame() {
+    return std::make_unique<Turbohiker::Game>();
+}
+
+void Turbohiker::Game::activateBonus(std::shared_ptr<Turbohiker::Entity> hiker) {
+    std::shared_ptr<Turbohiker::Bonus> bonus = hiker->getActiveBonus();
+    if (bonus) {
+        if (bonus->getType() == Turbohiker::spawn) {
+            bonus->activate();
+            bonus->removeFromRoad();
+            Turbohiker::RandomSingleton* X = Turbohiker::RandomSingleton::getInstance();
+            double x = X->random(0, 1);
+            std::shared_ptr<EnemyHiker> newEnemy = std::make_shared<EnemyHiker>(hiker->getPosition().x, hiker->getPosition().y-1);
+
+            if (x < 0.5) {  // 50% CHANCE TO BE A MOVING ENEMY
+                newEnemy->setSpeed(-2);
+            }
+            this->getWorld()->addEnemy(newEnemy);
+            hiker->setActiveBonus(nullptr);
+        }
+    }
+}
+
+bool Turbohiker::Game::isRunning() {
+    return this->running;
+}
+
+int Turbohiker::Game::getPlayerScore() {
+    return this->playerScore;
+}
+
+std::vector<int> Turbohiker::Game::getAIScores() {
+    return this->AIScores;
+}

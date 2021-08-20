@@ -1,19 +1,20 @@
-# Turbohiker
-Turbohiker game for the course of Advance Programming
+# ADVANCED PROGRAMING PROJECT: TURBOHIKER
 
-TODO:
-    -FIX ABSTRACT 2 HOURS
-    -FIX BONUS 3 HOURS
-    -RESOLUTION 2 HOURS
-    -OBSERVER 2 HOURS
-    -RAPPORT 2 HOURS
-    
+## Compile:
+```bash
+make
+```
 
-THURSDAY:
-    - PICKUP BONUS
-    - ADD 2 EXTRA BONUS
-    - FACTORY
-    - RESOLUTION
+## Run:
+```bash
+bin/main
+```
 
-FRIDAY:
-    - RAPPORT
+## CONTROLS:
+- Up and Down (speed up and slow down) (2 speeds)
+- Space to yell (3 seconds cooldown)
+- Enter to activate active bonus
+
+
+## GOOD LUCK AND HAVE FUN!
+

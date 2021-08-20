@@ -5,18 +5,22 @@
 #define TURBOGAME
 
 #include "Player.h"
-#include "World.h"
 #include "Racinghiker.h"
-#include "AbstractFactory.h"
+#include "World.h"
+
 
 namespace Turbohiker {    
     class Game {
         std::shared_ptr<Player> player;
         std::vector<std::shared_ptr<RacingHiker>> AI;
-        std::unique_ptr<World> world;
+        std::shared_ptr<World> world;
         void initPlayer();
         void initAI();
         void initWorld();
+        int playerScore;
+        std::vector<int> AIScores;
+        int clock;
+        bool running;
     public:
         Game();
         ~Game();
@@ -30,8 +34,17 @@ namespace Turbohiker {
         std::vector<std::shared_ptr<RacingHiker>> getAI();
         bool findCollision();
         bool checkCollision(std::shared_ptr<Entity> hiker, Turbohiker::Position oldPosition);
-        //Bonus* checkCollectedBonus(Entity* hiker, Turbohiker::Position oldPosition);
+        std::shared_ptr<Bonus> checkCollectedBonus(std::shared_ptr<Entity> hiker, Turbohiker::Position oldPosition);
         bool changeLane(Turbohiker::Direction direction, std::shared_ptr<Entity> hiker);
+        void activateBonus(std::shared_ptr<Entity> hiker);
+        bool isRunning();
+        int getPlayerScore();
+        std::vector<int> getAIScores();
+    };
+
+    class GameFactory {
+        public:
+            std::unique_ptr<Turbohiker::Game> createGame();
     };
 }
 

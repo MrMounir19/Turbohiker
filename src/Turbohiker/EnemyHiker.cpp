@@ -33,8 +33,11 @@ void Turbohiker::EnemyHiker::update() {
 void Turbohiker::EnemyHiker::getYelled() {
     Turbohiker::RandomSingleton* X = Turbohiker::RandomSingleton::getInstance();
     double x = X->random(0, 1);
-
     if (x < 0.5) {
         this->activate();
     }
+}
+
+std::shared_ptr<Turbohiker::Entity> Turbohiker::EnemyHikerFactory::createEntity(int lane, int position) {
+    return std::make_shared<Turbohiker::EnemyHiker>(lane, position);
 }

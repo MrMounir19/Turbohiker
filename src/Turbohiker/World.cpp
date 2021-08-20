@@ -8,7 +8,7 @@ Turbohiker::World::World() {
 void Turbohiker::World::initWorld() {
     Turbohiker::RandomSingleton* X = Turbohiker::RandomSingleton::getInstance();
     int amountEnemies = 10;
-    int amountBonuses = 6; //3 speed, 3 spawn
+    int amountBonuses = 10; //5 speed, 5 spawn
     srand(time(NULL));
     
     std::unique_ptr<EnemyHikerFactory> enemyHikerFactory = std::make_unique<EnemyHikerFactory>();
@@ -16,10 +16,10 @@ void Turbohiker::World::initWorld() {
     //GENERATE ENEMIES
     for (int i = 0; i < amountEnemies/2; i++) {
         int lane = X->getRandomLane();
-        int position = X->getRandomPosition(1000, 7200);
+        int position = X->getRandomPosition(500, 3400);
         this->staticHikers.push_back(std::dynamic_pointer_cast<EnemyHiker>(enemyHikerFactory->createEntity(lane, position)));
         lane = X->getRandomLane();
-        position = X->getRandomPosition(1000, 7200);
+        position = X->getRandomPosition(500, 3400);
         this->movingHikers.push_back(std::dynamic_pointer_cast<EnemyHiker>(enemyHikerFactory->createEntity(lane, position)));
         this->movingHikers[i]->setSpeed(-2);
     }
@@ -29,15 +29,11 @@ void Turbohiker::World::initWorld() {
 
     for (int i = 0; i < amountBonuses/2; i++) {
         int lane = X->getRandomLane();
-        int position = X->getRandomPosition(1000, 7200);
-        this->bonuses.push_back(std::dynamic_pointer_cast<Bonus>(bonusFactory->createEntity(lane, position)));
-        this->bonuses[2*i]->setDuration(5);
-        this->bonuses[2*i]->setType(Turbohiker::speed);
+        int position = X->getRandomPosition(500, 3400);
+        this->bonuses.push_back(bonusFactory->createBonus(lane, position, 5, Turbohiker::speed));
         lane = X->getRandomLane();
-        position = X->getRandomPosition(1000, 7200);
-        this->bonuses.push_back(std::dynamic_pointer_cast<Bonus>(bonusFactory->createEntity(lane, position)));
-        this->bonuses[2*i+1]->setDuration(0);
-        this->bonuses[2*i+1]->setType(Turbohiker::spawn);
+        position = X->getRandomPosition(500, 3400);
+        this->bonuses.push_back(bonusFactory->createBonus(lane, position, 0, Turbohiker::spawn));
     }
 }
 
@@ -57,4 +53,21 @@ std::vector<std::shared_ptr<Turbohiker::EnemyHiker>>Turbohiker::World::getEnemyH
 
 std::vector<std::shared_ptr<Turbohiker::Bonus>> Turbohiker::World::getBonuses() {
     return this->bonuses;
+}
+
+void Turbohiker::World::addEnemy(std::shared_ptr<Turbohiker::EnemyHiker> enemy) {
+    if (enemy->getSpeed() == 0) {
+        this->staticHikers.push_back(enemy);
+    }
+    else {
+        this->staticHikers.push_back(enemy);
+    }
+}
+
+
+
+
+
+std::unique_ptr<Turbohiker::World> Turbohiker::WorldFactory::createWorld() {
+    return std::make_unique<Turbohiker::World>();
 }

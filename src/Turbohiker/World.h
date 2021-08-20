@@ -4,7 +4,6 @@
 #include <iostream>
 #include "EnemyHiker.h"
 #include "Bonus.h"
-#include "AbstractFactory.h"
 
 namespace Turbohiker {
     class World {
@@ -19,6 +18,12 @@ namespace Turbohiker {
         std::vector<std::shared_ptr<Turbohiker::EnemyHiker>> getMovingHikers();
         std::vector<std::shared_ptr<Turbohiker::EnemyHiker>> getEnemyHikers();
         std::vector<std::shared_ptr<Turbohiker::Bonus>> getBonuses();
+        void addEnemy(std::shared_ptr<EnemyHiker> enemy);
+    };
+
+    class WorldFactory {
+        public:
+            std::unique_ptr<Turbohiker::World> createWorld();
     };
 }
 
